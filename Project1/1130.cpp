@@ -6,22 +6,24 @@
 //char* my_strcat(char* dest, const char* source) {
 //	assert(dest != NULL);
 //	assert(source != NULL);
+//  char* start =dest;
 //	while (*dest) {
 //		dest++;
 //	}
 //	while ((*dest++ = *source++)) {
 //		;
 //	}
-//	return dest;
+//	return start;
 //}
 //
 //char* my_strcpy(char* dest, const char* source) {
 //	assert(dest != NULL);
 //	assert(source != NULL);
+//  char* start=dest;
 //	while ((*dest++ = *source++)) {
 //		;
 //	}
-//	return dest;
+//	return start;
 //}
 //
 //int my_strlen(const char* str) {
