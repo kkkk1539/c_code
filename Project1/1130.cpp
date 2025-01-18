@@ -6,7 +6,7 @@
 //char* my_strcat(char* dest, const char* source) {
 //	assert(dest != NULL);
 //	assert(source != NULL);
-//  char* start =dest;
+//	char* start =dest;
 //	while (*dest) {
 //		dest++;
 //	}
@@ -19,7 +19,7 @@
 //char* my_strcpy(char* dest, const char* source) {
 //	assert(dest != NULL);
 //	assert(source != NULL);
-//  char* start=dest;
+//	char* start=dest;
 //	while ((*dest++ = *source++)) {
 //		;
 //	}
@@ -53,6 +53,27 @@
 //	}
 //	return (*str1 - *str2);
 //}
+
+//char* my_strstr(const char* str1, const char* str2) {
+//	assert(str1 && str2);
+//	const char* p1 = str1;
+//	const char* p2 = str2;
+//	const char* cur = p1;
+//	while (*cur) {
+//		p1 = cur;
+//		p2 = str2;
+//		while (*p1 && *p2 && *p1 == *p2) {
+//			p1++;
+//			p2++;
+//		}
+//		if (*p2 == '\0') {
+//			return (char*)cur;
+//		}
+//		cur++;
+//	}
+//	return NULL;
+//}
+
 //int main() {
 //	char arr1[20] = "Hello ";
 //	char arr2[] = "World";
