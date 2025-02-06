@@ -8,30 +8,85 @@ void menu(void) {
 	printf("***** 7.Sort    0.Exit   *****\n"); 
 }
 
+void check_capacity(Contact* pc) {
+	if (pc->sz == pc->capacity) {
+		PerInfo* pf = (PerInfo*)realloc(pc->data, (pc->capacity * 2) * sizeof(PerInfo));
+		if (pf != NULL) {
+			pc->data = pf;
+			pc->capacity *= 2;
+			printf("扩容成功.\n");
+		}
+	}
+}
+
+void destory_contact(Contact* pc) {
+	free(pc->data);
+	pc->data = NULL;
+	pc->sz = 0;
+	pc->capacity = 0;
+}
+
+
+void loading_contact(Contact* pc) {
+	PerInfo tmp = { 0 };
+	int i = 0;
+	FILE* pf = fopen("contact.txt", "rb");
+	if (pf == NULL) {
+		perror("loading_contact::fopen");
+		return;
+	}
+	while (fread(&tmp, sizeof(PerInfo), 1, pf)) {
+		check_capacity(pc);
+		pc->data[i] = tmp;
+		pc->sz++;
+		i++;
+	}
+	fclose(pf);
+	pf = NULL;
+}
+
 void Init_contact(Contact* pc) {
 	assert(pc);
-	memset(pc->data, 0, sizeof(pc->data));
-	pc->sz = 0;
+	PerInfo* ptr = (PerInfo*)calloc(DEFAULT_SIZE, sizeof(PerInfo));
+	if (ptr == NULL) {
+		printf("%s", strerror(errno));
+		return;
+	}
+	else {
+		pc->data = ptr;
+		pc->sz = 0;
+		pc->capacity = DEFAULT_SIZE;
+	}
+}
+
+void save_contact(Contact* pc) {
+	FILE* pfw = fopen("contact.txt", "wb");
+	if (pfw == NULL) {
+		perror("save_contact::fopen");
+		return;
+	}
+	for (int i = 0; i < pc->sz; i++) {
+		fwrite(pc->data + i, sizeof(PerInfo), 1, pfw);
+	}
+	fclose(pfw);
+	pfw = NULL;
 }
 
 void Add_contact(Contact* pc) {
 	assert(pc);
-	if (pc->sz < max) {
-		printf("请输入新添联系人的姓名:");
-		scanf("%s", pc->data[pc->sz].name);
-		printf("请输入新添联系人的年龄:");
-		scanf("%hu", &pc->data[pc->sz].age);
-		printf("请输入新添联系人的性别:");
-		scanf("%s", pc->data[pc->sz].sex);
-		printf("请输入新添联系人的电话:");
-		scanf("%s", pc->data[pc->sz].tele);
-		printf("请输入新添联系人的住址:");
-		scanf("%s", pc->data[pc->sz].address);
-		pc->sz++;
-	}
-	else {
-		printf("联系人已满，无法增加.\n");
-	}
+	check_capacity(pc);
+	printf("请输入新添联系人的姓名:");
+	scanf("%s", pc->data[pc->sz].name);
+	printf("请输入新添联系人的年龄:");
+	scanf("%hu", &pc->data[pc->sz].age);
+	printf("请输入新添联系人的性别:");
+	scanf("%s", pc->data[pc->sz].sex);
+	printf("请输入新添联系人的电话:");
+	scanf("%s", pc->data[pc->sz].tele);
+	printf("请输入新添联系人的住址:");
+	scanf("%s", pc->data[pc->sz].address);
+	pc->sz++;
+	printf("增加成功.\n");
 }
 
 void Show_contact(const Contact* pc) {
@@ -130,4 +185,9 @@ void Sort_name(Contact* pc) {
 	qsort(pc->data, pc->sz, sizeof(PerInfo), cmp_name);
 	Show_contact(pc);
 }
+
+
+
+
+
 
